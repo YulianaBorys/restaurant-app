@@ -1,7 +1,7 @@
 import DishCard from "./DishCard"
 import EmptyState from "../ui/EmptyState";
 
-export default function MenuList({ items=[] }) {
+export default function Menu({ items=[] }) {
      if (!items || items.length === 0) {
             return (<EmptyState message="На жаль, наразі немає доступних страв." />);
         } 
