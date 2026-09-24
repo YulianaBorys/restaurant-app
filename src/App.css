@@ -182,3 +182,52 @@
     border-right-color: var(--border);
   }
 }
+
+.navbar {
+  position: fixed;
+  display: flex;
+  gap: 50px;
+  top: 0;
+  left: 0;
+  right: 0;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 88px;
+}
+
+.navbar a {
+  align-items: center;
+
+  a {
+    &:hover {
+      background-color: var(--nav-link-hover-bg);
+    }
+  }
+}
+
+form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+form input{
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.App {
+  max-width: 900px;
+  text-align: center;
+  padding-top: 80px;
+}
+
+.content {
+  padding: 20px;
+  width: 100%;
+}
