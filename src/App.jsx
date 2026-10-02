@@ -5,6 +5,7 @@ import MenuList from "./components/MenuList";
 import BookingForm from "./components/BookingForm";
 import ReviewList from "./components/ReviewList";
 import Mainpage from "./components/Mainpage";
+import OrderPage from "./pages/OrderPage";
 
 
 import "./App.css";
@@ -19,6 +20,7 @@ function App() {
           <Link to="/menu">Меню</Link>
           <Link to="/booking">Бронювання</Link>
           <Link to="/reviews">Відгуки</Link>
+          <Link to="/order">Замовлення</Link>
         </nav>
       
         <div className="content">
@@ -27,6 +29,7 @@ function App() {
             <Route path="/menu" element={<MenuList items={MENU_ITEMS} />} />
             <Route path="/booking" element={<BookingForm />} />
             <Route path="/reviews" element={<ReviewList reviews={REVIEWS} />} />
+            <Route path="/order" element={<OrderPage />} />
           </Routes>
         </div>
       </div>

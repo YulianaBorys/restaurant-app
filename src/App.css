@@ -230,3 +230,10 @@ form input{
   padding: 20px;
   width: 100%;
 }
+
+.order-page-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 'repeat(auto-fit, minmax(300px, 1fr))';
+  margin-top: 20px;
+}
