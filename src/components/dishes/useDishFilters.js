@@ -1,34 +1,41 @@
-import {useState} from 'react'
+import { useState } from 'react'
 
-export default function useDishFilters(dishes){
-    const [query, setQuery] = useState('')
-    const [excludeAlergens, setExcludeAlergens] = useState([])
+export default function useDishFilters(items = []) {
+  const [query, setQuery] = useState('')
+  const [excludedAllergens, setExcludedAllergens] = useState([])
 
-    function toggleAlergen(alergen){
-        if(excludeAlergens.includes(alergen)){
-            setExcludeAlergens(excludeAlergens.filter(a=>a!==alergen))
-        }else{
-            setExcludeAlergens([...excludeAlergens, alergen])
-        }
-    }
+  // Перемикач виключення конкретного алергену
+  function toggleAllergen(allergenValue) {
+    setExcludedAllergens((previous) =>
+      previous.includes(allergenValue)
+        ? previous.filter((item) => item !== allergenValue)
+        : [...previous, allergenValue]
+    )
+  }
 
-    function resetFilters(){
-        setQuery('')
-        setExcludeAlergens([])
-    }
+  // Скидання всіх фільтрів
+  function resetFilters() {
+    setQuery('')
+    setExcludedAllergens([])
+  }
 
-    const filteredDishes = dishes.filter(dish=>{
-        const matchesQuery = dish.name.toLowerCase().includes(query.toLowerCase())
-        const hasExcludedAlergen = dish.alergens.some(alergen=>excludeAlergens.includes(alergen))
-        return matchesQuery && !hasExcludedAlergen
-    })
+  const normalizedQuery = query.trim().toLocaleLowerCase('uk')
 
-    return {
-        query,
-        setQuery,
-        excludeAlergens,
-        toggleAlergen,
-        resetFilters,
-        filteredDishes
-    }
+  // Похідний список visibleItems — обчислюється під час рендеру без дублювання стану
+  const visibleItems = items.filter((dish) => {
+    const matchesQuery = dish.name.toLocaleLowerCase('uk').includes(normalizedQuery)
+    const hasExcludedAllergen = dish.alergens?.some((allergen) =>
+      excludedAllergens.includes(allergen)
+    )
+    return matchesQuery && !hasExcludedAllergen
+  })
+
+  return {
+    query,
+    setQuery,
+    excludedAllergens,
+    toggleAllergen,
+    visibleItems,
+    resetFilters,
+  }
 }
