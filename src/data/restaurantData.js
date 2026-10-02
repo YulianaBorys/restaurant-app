@@ -4,6 +4,7 @@ export const MENU_ITEMS = [
         name: "Салат Цезар",
         category: "Салати",
         description: "Свіжі листя салату, куряче філе, пармезан, сухарики та соус Цезар.",
+        alergens: ["глютен", "молочні продукти", "яйця"],
         price: 120,
         image: "https://images.unsplash.com/photo-1604908177520-1e3f5c8b6f4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
         available: true
@@ -13,6 +14,7 @@ export const MENU_ITEMS = [
         name: "Грецький салат",
         category: "Салати",
         description: "Свіжі листя салату, огірки, помідори, куряче філе, пармезан та соус Грецький.",
+        alergens: ["глютен", "молочні продукти", "яйця"],
         price: 100,
         image: "https://images.unsplash.com/photo-1604908177520-1e3f5c8b6f4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
         available: true
@@ -22,6 +24,7 @@ export const MENU_ITEMS = [
         name: "Салат з тунцем", 
         category: "Салати",
         description: "Свіжі листя салату, тунець, помідори, огірки та соус Тунець.",
+        alergens: ["глютен", "молочні продукти", "яйця"],
         price: 130,
         image: "https://images.unsplash.com/photo-1604908177520-1e3f5c8b6f4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
         available: true
@@ -31,6 +34,7 @@ export const MENU_ITEMS = [
         name: "Салат з качиною грудкою",
         category: "Салати",
         description: "Свіжі листя салату, качина грудка, помідори, огірки та соус Качина.",
+        alergens: ["глютен", "молочні продукти", "яйця"],
         price: 140,
         image: "https://images.unsplash.com/photo-1604908177520-1e3f5c8b6f4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
         available: true
@@ -41,6 +45,7 @@ export const MENU_ITEMS = [
         name: "Салат з лососем",
         category: "Салати",
         description: "Свіжі листя салату, лосось, помідори, огірки та соус Лосось.",
+        alergens: ["глютен", "молочні продукти", "яйця"],
         price: 150,
         image: "https://images.unsplash.com/photo-1604908177520-1e3f5c8b6f4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
         available: true
@@ -50,6 +55,7 @@ export const MENU_ITEMS = [
         name: "Салат з креветками",
         category: "Салати",
         description: "Свіжі листя салату, креветки, помідори, огірки та соус Креветки.",
+        alergens: ["глютен", "молочні продукти", "яйця"],
         price: 160,
         image: "https://images.unsplash.com/photo-1604908177520-1e3f5c8b6f4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
         available: true

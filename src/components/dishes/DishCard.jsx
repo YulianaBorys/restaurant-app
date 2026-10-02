@@ -1,14 +1,41 @@
 import AvailabilityBadge from "./AvailabilityBadge";
+import {useState} from "react";
+import AppButton from "../ui/AppButton";
 
-export default function DishCard({ dish }) {
+export default function DishCard({ dish, selected, onSelect }) {
+    const [detailsOpen, setDetailsOpen] = useState(false);
+    const descriptionId = `dish-description-${dish.id}-description`;
+
     return (
-        <div className="dish-card">
+        <article className="dish-card">
             <h3>{dish.name}</h3>
             <p>Категорія: {dish.category}</p>
             <img src={dish.image} alt={dish.name} className="dish-image" />
             <p>{dish.description}</p>
             <p>Ціна: {dish.price} грн</p>
             <AvailabilityBadge available={dish.available} />
-        </div>
+
+            <AppButton 
+            variant="secondary"
+             onClick={() => setDetailsOpen(previous => !previous)} 
+             aria-expanded={detailsOpen} 
+             aria-controls={descriptionId}>
+                {detailsOpen ? "Приховати склад" : "Показати склад"}
+            </AppButton>
+
+            <p id={descriptionId} hidden={!detailsOpen} className="description">
+                {dish.ingredients}
+            </p>
+
+            <p>
+                <AppButton 
+                onClick={() => onSelect(dish.id)} 
+                aria-pressed={selected}>
+                    Вибрано "{dish.name}"
+                </AppButton>
+            </p>
+
+            {selected && <p className="selected-message">Ця страва вибрана</p>}
+        </article>
     );
 }
