@@ -9,8 +9,6 @@ const ALLERGENS = [
 ];
 
 export default function DishFilters({
-  query,
-  onQueryChange,
   excludedAllergens = [],
   onExcludedAllergensChange,
   onReset,

@@ -31,7 +31,6 @@ export default function useDishFilters(items = []) {
   })
 
   return {
-    query,
     setQuery,
     excludedAllergens,
     toggleAllergen,
