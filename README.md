@@ -1,16 +1,89 @@
-# React + Vite
+# Restaurant Web Application 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+SPA-застосунок для мережі ресторанів та служби доставки, розроблений на React + Vite з підтримкою Docker-контейнеризації, клієнтського роутингу та Context API.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Про проєкт
 
-## React Compiler
+Веб-застосунок «TastyBytes Delivery» призначений для зручного перегляду меню закладу, фільтрації страв за категоріями й алергенами, оформлення замовлень на доставку, а також бронювання столиків і перегляду відгуків.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Основні можливості (Лабораторні 1.1 - 2.1):
+- **Каталог страв та фільтрація:** Динамічний пошук та фільтрація страв за алергенами без перезавантаження сторінки.
+- **Оформлення замовлення:** Інтерактивна керована форма із миттєвим оновленням підсумку замовлення (`OrderSummary`).
+- **Спільний стан (Scoped Context API):** Контекст вибору страви `DishSelectionContext` із власним хуком `useDishSelection`, що усуває прокидання пропсів (*Prop Drilling*).
+- **Синхронізація з DOM:** Динамічна зміна заголовка вкладки браузера (`document.title`) при перегляді замовлення.
+- **Маршрутизація:** Клієнтська навігація за допомогою `react-router-dom` (`/`, `/menu`, `/booking`, `/reviews`, `/order`).
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Архітектура керування станом (Лабораторна робота 2.1)
+
+У проєкті реалізовано комбінований підхід до управління станом:
+
+- **Кастомні хуки:**
+  - `useDishFilters`: агрегує стан пошукового запиту (`query`) та виключених алергенів (`excludedAllergens`), обчислюючи похідний масив `visibleItems`.
+  - `useDishSelection`: надає зручний інтерфейс для роботи з контекстом вибору страв.
+
+- **Scoped Context API (`DishSelectionContext`):**
+  - Забезпечує спільний стан вибору страви між сторінками `MenuPage` та `OrderPage`.
+  - Обмежений за допомогою `DishSelectionProvider` тільки тими маршрутами, яким потрібен цей стан (`/menu` та `/order`), захищаючи інші компоненти від зайвих оновлень.
+
+- **Синхронізація з DOM (`useEffect`):**
+  - Використовується у `OrderPage` для динамічного оновлення `document.title` відповідно до обраної страви.
+
+---
+
+## Швидкий запуск проєкту
+
+### Варіант 1: Локальний запуск (без Docker)
+
+1. **Встановіть залежності:**
+   ```bash
+   npm install
+
+2. **Запустіть режим розробника:**
+    ```bash
+    npm run dev
+    Перейдіть у браузер за адресою
+
+3. **Перевірка збірки:**
+    ```bash
+    npm run dev
+    npm run preview
+
+
+### Варіант 2: Запуск через Docker
+
+1. **Переконайтеся, що Docker Desktop запущено.**
+
+2. **Зберіть та запустіть контейнер:**
+ ```bash
+    docker compose up --build
+    Відкрийте застосунок у браузері: http://localhos`t:5173
+
+3. **Зупинка контейнера:**
+    ```bash
+    docker compose down
+
+## Використані технології
+Frontend: React 18, Vite, React Router DOM (v6+)
+State Management: React Context API, Custom Hooks (useDishFilters, useDishSelection)
+Контейнеризація: Docker, Docker Compose
+Контроль версій: Git / GitHub
+
+
+## Архітектура керування станом (Лабораторна робота 2.1)
+
+У проєкті реалізовано комбінований підхід до управління станом:
+
+- **Кастомні хуки:**
+  - `useDishFilters`: агрегує стан пошукового запиту (`query`) та виключених алергенів (`excludedAllergens`), обчислюючи похідний масив `visibleItems`.
+  - `useDishSelection`: надає зручний інтерфейс для роботи з контекстом вибору страв.
+
+- **Scoped Context API (`DishSelectionContext`):**
+  - Забезпечує спільний стан вибору страви між сторінками `MenuPage` та `OrderPage`.
+  - Обмежений за допомогою `DishSelectionProvider` тільки тими маршрутами, яким потрібен цей стан, захищаючи інші компоненти від зайвих оновлень.
+
+- **Синхронізація з DOM (`useEffect`):**
+  - Використовується у `OrderPage` для динамічного оновлення `document.title` браузера відповідно до обраної страви.
