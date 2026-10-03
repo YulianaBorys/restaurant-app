@@ -8,6 +8,8 @@ import AvailabilityBadge from '../components/dishes/AvailabilityBadge.jsx';
 import OrderSummary from '../components/orders/OrderSummary.jsx';
 import OrderForm from '../components/orders/OrderForm.jsx';
 
+import {useDishSelection} from '../context/DishSelectionContext.jsx';
+
 function createEmptyDraft() {
   return {
     comment: '',
@@ -16,6 +18,7 @@ function createEmptyDraft() {
 }
 
 export default function OrderPage({ item, onClearSelection }) {
+  const { selectedDish, clearSelection } = useDishSelection();
   const [draft, setDraft] = useState(createEmptyDraft);
 
   const pageTitle = item
@@ -48,7 +51,7 @@ export default function OrderPage({ item, onClearSelection }) {
     setDraft(createEmptyDraft());
   }
 
-  if (!item) {
+  if (!selectedDish) {
     return (
       <Section id="order-page" title="Підготовка замовлення">
         <EmptyState title="Страва не обрана">

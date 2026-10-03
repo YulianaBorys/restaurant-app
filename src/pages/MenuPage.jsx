@@ -4,7 +4,13 @@ import DishFilters from "../components/dishes/DishFilters";
 import useDishFilters from "../components/dishes/useDishFilters";
 import MenuSummary from "../components/dishes/MenuSummary";
 
-export default function MenuPage({items=[], selectedId, onSelect}) {
+import {useDishSelection} from '../context/DishSelectionContext';
+import {MENU_ITEMS} from '../data/restaurantData';
+
+export default function MenuPage() {
+
+  const { selectedId, selectDish } = useDishSelection();
+
   const {
     query,
     setQuery,
@@ -12,7 +18,7 @@ export default function MenuPage({items=[], selectedId, onSelect}) {
     toggleAllergen,
     resetFilters,
     visibleItems,
-  } = useDishFilters(items);
+  } = useDishFilters(MENU_ITEMS);
 
   return (
     <div className="menu-page">
@@ -31,7 +37,7 @@ export default function MenuPage({items=[], selectedId, onSelect}) {
         <MenuList
           items={visibleItems}
           selectedId={selectedId}
-          onSelect={onSelect}
+          onSelect={selectDish}
           emptyTitle="На жаль, немає страв, що відповідають вашим критеріям."
         />
       </Section>
