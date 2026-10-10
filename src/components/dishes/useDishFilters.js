@@ -1,7 +1,18 @@
-import { useState } from 'react'
+import { useSearchParams, useSearchParams } from "react-router-dom"
 
-export default function useDishFilters(items = []) {
-  const [query, setQuery] = useState('')
+export default function useDishFilters(items) {
+  const [searchParams, setSearchParams]=useSearchParams()
+
+  const query = searchParams.get('q') ?? ''
+  const availableOnly=searchParams.get('available') === '1'
+
+  const normalizedQuery = query.trim().toLocaleLowerCase('uk')
+
+  const visibleItems=items.filter((item)=>(
+    item.name.toLocaleLowerCase('uk').includes(normalizedQuery) &&
+    (!availableOnly || item.availableForDelivery)
+  ))
+  
   const [excludedAllergens, setExcludedAllergens] = useState([])
 
   // Перемикач виключення конкретного алергену
@@ -19,7 +30,6 @@ export default function useDishFilters(items = []) {
     setExcludedAllergens([])
   }
 
-  const normalizedQuery = query.trim().toLocaleLowerCase('uk')
 
   // Похідний список visibleItems — обчислюється під час рендеру без дублювання стану
   const visibleItems = items.filter((dish) => {
