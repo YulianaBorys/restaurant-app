@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
+import { Routes, Route, Link } from 'react-router-dom'
 
 import {DishSelectionProvider} from './context/DishSelectionContext'
 
@@ -13,7 +13,6 @@ import './App.css'
 
 export default function App() {
   return (
-    <Router>
         <div className="App">
           <nav className="navbar">
             <Link to="/">Головна</Link>
@@ -55,6 +54,5 @@ export default function App() {
           </Routes>
         </div>
       </div>
-    </Router>
   )
 }
