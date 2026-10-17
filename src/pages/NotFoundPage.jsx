@@ -10,7 +10,7 @@ export default function NotFoundPage({
             <PageHeading title={title} />
             <p>{message}</p>
             <div>
-                <Link to="/menu" className="app-button">
+                <Link to="/menu" className="app-button app-button-primary">
                 Відкрити меню
                 </Link>
                 <Link to="/" className="app-button app-button-secondary">
