@@ -1,4 +1,3 @@
-import FormField from "../ui/FormField.jsx";
 import AppButton from "../ui/AppButton.jsx";
 
 const ALLERGENS = [
@@ -9,13 +8,34 @@ const ALLERGENS = [
 ];
 
 export default function DishFilters({
+  query = '',
+  onQueryChange,
+  availableOnly = false,
+  onAvailableOnlyChange,
   excludedAllergens = [],
   onExcludedAllergensChange,
   onReset,
 }) {
   return (
     <div className="catalog-filters">
-
+      <label className="checkbox-field" htmlFor="menu-search">
+        Пошук страв
+        <input
+          id="menu-search"
+          type="search"
+          value={query}
+          onChange={(event) => onQueryChange(event.target.value)}
+          placeholder="Введіть назву страви"
+        />
+      </label>
+      <label className="checkbox-field">
+        <input
+          type="checkbox"
+          checked={availableOnly}
+          onChange={(event) => onAvailableOnlyChange(event.target.checked)}
+        />
+        Лише доступні страви
+      </label>
       <fieldset className="allergens-fieldset">
         <legend>Виключити алергени:</legend>
         <div className="allergens-grid">

@@ -20,7 +20,7 @@ export default function OrdersLayout(){
             </nav>
 
             <div className="orders-content">
-                <Ootlet/>
+                <Outlet/>
             </div>
         </div>
     )

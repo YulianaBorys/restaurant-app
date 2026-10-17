@@ -1,58 +1,43 @@
-import { Routes, Route, Link } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 
-import {DishSelectionProvider} from './context/DishSelectionContext'
+import AppLayout from './components/layout/AppLayout'
+import OrdersLayout from './components/layout/OrdersLayout'
 
 import Mainpage from './components/Mainpage'
 import MenuPage from './pages/MenuPage'
-import OrderPage from './pages/OrderPage'
+import DishDetailsPage from './pages/DishDetailsPage'
+import OrdersPage from './pages/OrdersPage'
+import OrderCreatePage from './pages/OrderCreatePage'
+import OrderEditPage from './pages/OrderEditPage'
 import BookingForm from './components/BookingForm'
 import ReviewList from './components/ReviewList'
-import {REVIEWS} from './data/restaurantData'
+import NotFoundPage from './pages/NotFoundPage'
+
+import {MENU_ITEMS, REVIEWS} from './data/restaurantData'
+import {orders} from './data/orders'
 
 import './App.css'
 
 export default function App() {
   return (
-        <div className="App">
-          <nav className="navbar">
-            <Link to="/">Головна</Link>
-            <Link to="/menu">Меню</Link>
-            <Link to="/booking">Бронювання</Link>
-            <Link to="/reviews">Відгуки</Link>
-          <Link to="/order">Замовлення</Link>
-        </nav>  
-
-        <div className="content">
           <Routes>
+            <Route element={<AppLayout/>}>
             <Route path="/" element={<Mainpage />} />
 
-            <Route
-              path="/menu"
-              element={<DishSelectionProvider>
-                <MenuPage/>
-              </DishSelectionProvider>}
-            />
+            <Route path="/menu" element={<MenuPage dish={MENU_ITEMS}/>}/>
+            <Route path="/menu/:dishId" element={<DishDetailsPage dishes={MENU_ITEMS}/>}/>
 
-            <Route
-              path="/order"
-              element={
-                <DishSelectionProvider>
-                  <OrderPage />
-                </DishSelectionProvider>
-              }
-            />
+            <Route path="/order" element={<OrdersLayout/>}>
+              <Route index element={<OrdersPage orders={orders} dishes={MENU_ITEMS}/>}/>
+              <Route path="new" element={<OrderCreatePage dishes={MENU_ITEMS}/>}/>
+              <Route path=":orderId/edit" element={<OrderEditPage orders={orders} dishes={MENU_ITEMS}/>}/>
+            </Route>
 
-            <Route
-              path="/booking"
-              element={<BookingForm />}
-            />
+            <Route path="/booking" element={<BookingForm />}/>
+            <Route path="/reviews" element={<ReviewList reviews={REVIEWS} />}/>
 
-            <Route
-              path="/reviews"
-              element={<ReviewList reviews={REVIEWS} />}
-            />
+             <Route path="*" element={<NotFoundPage/>}/>
+            </Route>
           </Routes>
-        </div>
-      </div>
   )
 }

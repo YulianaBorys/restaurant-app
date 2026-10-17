@@ -1,29 +1,28 @@
 import { useState, useEffect } from 'react';
-import { Link} from 'react-router-dom';
 
 import Section from '../components/ui/Section.jsx';
-import EmptyState from '../components/ui/EmptyState.jsx';
 import AppButton from '../components/ui/AppButton.jsx';
 import AvailabilityBadge from '../components/dishes/AvailabilityBadge.jsx';
 import OrderSummary from '../components/orders/OrderSummary.jsx';
 import OrderForm from '../components/orders/OrderForm.jsx';
 
-import {useDishSelection} from '../context/DishSelectionContext.jsx';
-
-function createEmptyDraft() {
+function createEmptyDraft(initialDraft = {}) {
   return {
-    comment: '',
-    needsCutlery: false,
+    comment: initialDraft.comment ?? initialDraft.purpose ?? '',
+    needsCutlery: initialDraft.needsCutlery ?? initialDraft.needsHelp ?? false,
   };
 }
 
-export default function OrderPage({ item, onClearSelection }) {
-  const { selectedDish, clearSelection } = useDishSelection();
-  const [draft, setDraft] = useState(createEmptyDraft);
+export default function OrderPage({
+  dish,
+  title,
+  initialDraft,
+  onCancel,
+  cancelLabel = 'Скасувати вибір і очистити форму',
+}) {
+  const [draft, setDraft] = useState(() => createEmptyDraft(initialDraft));
 
-  const pageTitle = item
-    ? `Оформлення замовлення: ${item.name}`
-    : 'Оформлення замовлення';
+  const pageTitle = title ?? `Оформлення замовлення: ${dish.name}`;
 
   useEffect(() => {
     const previousTitle = document.title;
@@ -51,38 +50,33 @@ export default function OrderPage({ item, onClearSelection }) {
     setDraft(createEmptyDraft());
   }
 
-  if (!selectedDish) {
-    return (
-      <Section id="order-page" title="Підготовка замовлення">
-        <EmptyState title="Страва не обрана">
-          <p>
-            <Link to="/menu">Будь ласка, оберіть страву у меню для оформлення замовлення</Link>
-          </p>
-        </EmptyState>
-      </Section>
-    );
-  }
-
   return (
-    <Section id="order-page" title="Підготовка замовлення">
+    <Section id="order-page" title={title ?? 'Підготовка замовлення'}>
       <p>
-        Обрано: «<strong>{item.name}</strong>»:{' '}
-        <AvailabilityBadge available={item.availableForDelivery} />
+        Обрано: «<strong>{dish.name}</strong>»
+      </p>
+      <p>
+        <AvailabilityBadge available={dish.available} />
       </p>
 
       <OrderForm
-        dishName={item.name}
+        dishName={dish.name}
         draft={draft}
         onCommentChange={handleCommentChange}
         onNeedsCutleryChange={handleNeedsCutleryChange}
         onReset={handleReset}
       />
 
-      <OrderSummary dishName={item.name} draft={draft} />
+      <OrderSummary
+        dishName={dish.name}
+        quantity={1}
+        comment={draft.comment}
+        needsCutlery={draft.needsCutlery}
+      />
 
       <div style={{ marginTop: '20px' }}>
-        <AppButton variant="secondary" onClick={onClearSelection}>
-          Скасувати вибір і очистити форму
+        <AppButton variant="secondary" onClick={onCancel}>
+          {cancelLabel}
         </AppButton>
       </div>
     </Section>

@@ -1,7 +1,6 @@
-import {createContext, useContext, useState} from "react";
+import {useState} from "react";
 import {MENU_ITEMS} from "../data/restaurantData";
-
-const DishSelectionContext = createContext();
+import DishSelectionContext from "./dishSelectionContext";
 
 export function DishSelectionProvider({children}) {
     const [selectedId, setSelectedId] = useState(null);
@@ -29,12 +28,4 @@ export function DishSelectionProvider({children}) {
             {children}
         </DishSelectionContext.Provider>
     );
-}
-
-export function useDishSelection() {
-    const context = useContext(DishSelectionContext);
-    if (!context) {
-        throw new Error("useDishSelection must be used within a DishSelectionProvider");
-    }
-    return context;
 }

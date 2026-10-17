@@ -9,16 +9,14 @@ const navigationLinks=[
 ]
 
 export default function AppLayout() {
+    const links = navigationLinks;
+
     return (
         <DishSelectionProvider>
-            <a className="skip-link" href="#main-content">Перейти до основного вмісту</a>
-            <SiteHeader title={title} links={links} />
+            <SiteHeader links={links} />
             <main id="main-content" tabIndex={-1}>
                 <Outlet/>
             </main>
-            <footer className="site-footer">
-                <p>Ресторан. Каталог та підготовка замовлень</p>
-            </footer>
         </DishSelectionProvider>
     );
 }

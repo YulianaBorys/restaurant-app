@@ -4,7 +4,7 @@ import DishFilters from "../components/dishes/DishFilters";
 import useDishFilters from "../components/dishes/useDishFilters";
 import MenuSummary from "../components/dishes/MenuSummary";
 
-import {useDishSelection} from '../context/DishSelectionContext';
+import useDishSelection from '../hooks/useDishSelection';
 import {MENU_ITEMS} from '../data/restaurantData';
 
 export default function MenuPage() {
@@ -14,6 +14,8 @@ export default function MenuPage() {
   const {
     query,
     setQuery,
+    availableOnly,
+    setAvailableOnly,
     excludedAllergens,
     toggleAllergen,
     resetFilters,
@@ -27,6 +29,8 @@ export default function MenuPage() {
         <DishFilters
           query={query}
           onQueryChange={setQuery}
+          availableOnly={availableOnly}
+          onAvailableOnlyChange={setAvailableOnly}
           excludedAllergens={excludedAllergens}
           onExcludedAllergensChange={toggleAllergen}
           onReset={resetFilters}
