@@ -41,3 +41,34 @@ AppLayout (layout)
 | `MenuSummary` | `components/dishes` | `total` (`number`) | Показує загальну кількість страв у каталозі. |
 | `OrderFormPreview` | `components/orders` | — | Форма підготовки замовлення з полями імені, телефону, адреси та кількості. |
 | `AppLayout` | `components/layout` | `title`, `links`, `children` | Загальний каркас сайту: шапка, основний вміст і підвал. |
+
+
+# Архітектура компонентів та навігації (Лабораторна робота 2.2)
+
+## 1. Карта сторінок та дерево маршрутів (Routes Tree)
+
+Всі маршрути додатку оголошені в `src/App.jsx` з використанням `react-router-dom`:
+
+- `<AppLayout />` (спільна оболонка, що надає `DishSelectionProvider`)
+  - `/` — `HomePage`: Головна сторінка.
+  - `/menu` — `MenuListPage`: Каталог страв із синхронізацією фільтрів у URL (`useSearchParams`).
+  - `/menu/:dishId` — `DishDetailsPage`: Параметризована сторінка деталей конкретної страви (`useParams`).
+  - `/order` — `<OrdersLayout />` (вкладена оболонка з підменю розділу):
+    - `/order` (index) — `OrdersPage`: Список наявних замовлень.
+    - `/order/new` — `OrderCreatePage`: Форма підготовки нової чернетки замовлення.
+    - `/order/:orderId/edit` — `OrderEditPage`: Редагування наявного замовлення.
+  - `*` — `NotFoundPage`: Сторінка обробки невідомих адрес та відсутніх записів (404).
+
+## 2. Специфікація засобів навігації та роботи з URL
+
+| Інструмент | Компоненти / Файли | Призначення |
+| :--- | :--- | :--- |
+| `NavLink` | `MainNav.jsx`, `OrdersLayout.jsx` | Підсвітка активного розділу (`.active`) та атрибут доступності `aria-current="page"`. |
+| `Link` | `SiteHeader.jsx`, `DishCard.jsx`, `NotFoundPage.jsx` | Клієнтські переходи без перезавантаження всієї HTML-сторінки. |
+| `useParams` | `DishDetailsPage.jsx`, `OrderEditPage.jsx` | Зчитування змінних параметрів шляху (`:dishId`, `:orderId`). |
+| `useSearchParams` | `useDishFilters.js`, `OrderCreatePage.jsx` | Синхронізація фільтрів каталогу (`?q=...&available=1`) та передача `?dishId=...` в URL. |
+| `useNavigate` | `DishDetailsPage.jsx`, `OrderCreatePage.jsx` | Програмний перехід після дій користувача (замовлення, скасування). |
+
+## 3. Збереження стану між переходами (Context API)
+
+Для збереження обраної страви під час будь-яких переходів між сторінками, `<Outlet/>` всередині `AppLayout.jsx` обгорнуто в `DishSelectionProvider`. Це дозволяє уникнути скидання стану вибору страви при навігації між `/menu` та `/order`.
