@@ -72,3 +72,19 @@ AppLayout (layout)
 ## 3. Збереження стану між переходами (Context API)
 
 Для збереження обраної страви під час будь-яких переходів між сторінками, `<Outlet/>` всередині `AppLayout.jsx` обгорнуто в `DishSelectionProvider`. Це дозволяє уникнути скидання стану вибору страви при навігації між `/menu` та `/order`.
+
+
+# Оновлена компонентна архітектура (Лабораторна робота 3.1)
+
+## Карта маршрутів та параметрів URL
+
+| Шлях (Path) | Компонент | Параметри URL / Джерело даних | Призначення |
+| :--- | :--- | :--- | :--- |
+| `/` | `HomePage` | — | Головна сторінка закладу. |
+| `/menu` | `MenuPage` | `?q=`, `?category=`, `?sort=` (`useSearchParams`) | Каталог страв із пошуком, категоріями та сортуванням. |
+| `/menu/:dishId` | `DishDetailsPage` | `:dishId` (`useParams`) | Деталі страви та перехід до замовлення. |
+| `/orders` | `OrdersPage` | `?q=`, `?cutlery=`, `?sort=` (`useSearchParams`) | Список замовлень із можливістю фільтрації. |
+| `/orders/new` | `OrderCreatePage` | `?dishId=` (`useSearchParams`) | Форма підготовки та створення замовлення. |
+| `/orders/:orderId` | `OrderDetailsPage` | `:orderId` (`useParams`) | Перегляд замовлення та видалення з модальним вікном. |
+| `/orders/:orderId/edit` | `OrderEditPage` | `:orderId` (`useParams`) | Форма оновлення даних замовлення. |
+| `*` | `NotFoundPage` | — | Опрацювання невідомих маршрутів (404). |
