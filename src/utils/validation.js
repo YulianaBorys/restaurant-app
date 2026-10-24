@@ -1,7 +1,7 @@
 export default function validateOrderForm(form){
     const errorValidation={};
 
-    const name=form.clientName?form.clientName.tirm(): "";
+    const name=form.clientName?form.clientName.trim(): "";
     if(!name){
         errorValidation.clientName="Ім'я клієнта є обов'язковим";
     }else if (name.length<2){
@@ -26,7 +26,7 @@ export default function validateOrderForm(form){
     }
 
     const qty=Number(form.quantity);
-    if(isNaN(qty) || qty<1 || quantity>10){
+    if(isNaN(qty) || qty<1 || qty>10){
         errorValidation.quantity="Мінімальна кількість порцій 1, максимальна - 10"
     }
 

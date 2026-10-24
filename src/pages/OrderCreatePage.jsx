@@ -1,6 +1,5 @@
 import {Link, useNavigate, useSearchParams} from 'react-router-dom'
 import PageHeading from '../components/ui/PageHeading'
-import Section from '../components/ui/Section'
 import useDishSelection from '../hooks/useDishSelection'
 import OrderPage from './OrderPage'
 import NotFoundPage from './NotFoundPage'
