@@ -33,13 +33,19 @@ export default function DishDetailsPage({dishes}){
             <p className="category">Категорія: {dish.category}</p>
             <p className="description">{dish.description}</p>
             <p className="price">Ціна: {dish.price}</p>
-            <p><AvailabilityBadge available={dish.available}/></p>
+            {dish.deliveryAvailable === false ? (
+                <p className="delivery-note">Лише у закладі, без доставки</p>
+            ) : (
+                <p><AvailabilityBadge available={dish.available}/></p>
+            )}
             <img src={dish.image} alt={dish.name} className="image"/>
 
             <div className="actions">
-                <AppButton variant="primary" onClick={handlePrepareOrder}>
-                    Вибрати й підготувати замовлення
-                </AppButton>
+                {dish.deliveryAvailable !== false && (
+                    <AppButton variant="primary" onClick={handlePrepareOrder}>
+                        Вибрати й підготувати замовлення
+                    </AppButton>
+                )}
                 <Link to="/menu" className="app-button app-button-secondary">
                 До каталогу
                 </Link>

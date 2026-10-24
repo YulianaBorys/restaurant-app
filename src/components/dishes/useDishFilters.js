@@ -1,76 +1,88 @@
-import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 export default function useDishFilters(items = []) {
   const [searchParams, setSearchParams] = useSearchParams()
 
-  // 1. Читання параметрів із URL
-  const query = searchParams.get('q') ?? ''
+  const section = searchParams.get('section') || 'dishes'
+  const query = searchParams.get('q') || ''
   const availableOnly = searchParams.get('available') === '1'
-
-  // 2. Локальний стан для виключених алергенів
-  const [excludedAllergens, setExcludedAllergens] = useState([])
+  const sortBy = searchParams.get('sort') || 'name-asc'
+  const excludedAllergens = (searchParams.get('allergens') || '').split(',').filter(Boolean)
 
   const normalizedQuery = query.trim().toLocaleLowerCase('uk')
 
-  // 3. Єдине обчислення похідного списку visibleItems під час рендеру
-  const visibleItems = items.filter((dish) => {
-    // Перевірка за назвою
-    const matchesQuery = dish.name.toLocaleLowerCase('uk').includes(normalizedQuery)
+  const visibleItems = items
+    .filter((dish) => {
+      const searchableText = `${dish.name} ${dish.category} ${dish.description}`.toLocaleLowerCase('uk')
+      const matchesSection = dish.section === section
+      const matchesQuery = searchableText.includes(normalizedQuery)
+      const matchesAvailability = !availableOnly || dish.available
+      const hasExcludedAllergen = dish.allergens?.some((allergen) =>
+        excludedAllergens.includes(allergen)
+      )
 
-    // Перевірка прапорця "Лише для доставки"
-    const matchesAvailability = !availableOnly || dish.available
+      return matchesSection && matchesQuery && matchesAvailability && !hasExcludedAllergen
+    })
+    .sort((first, second) => {
+      if (sortBy === 'price-asc') return first.price - second.price
+      if (sortBy === 'price-desc') return second.price - first.price
+      if (sortBy === 'name-desc') return second.name.localeCompare(first.name, 'uk')
+      return first.name.localeCompare(second.name, 'uk')
+    })
 
-    // Перевірка на відсутність виключених алергенів
-    const hasExcludedAllergen = dish.allergens?.some((allergen) =>
-      excludedAllergens.includes(allergen)
-    )
-
-    return matchesQuery && matchesAvailability && !hasExcludedAllergen
-  })
-
-  // 4. Функції оновлення фільтрів у URL
-  function setQuery(value) {
-    const next = new URLSearchParams(searchParams)
-    if (value === '') {
-      next.delete('q')
-    } else {
-      next.set('q', value)
-    }
-    setSearchParams(next, { replace: true })
-  }
-
-  function setAvailableOnly(value) {
+  function updateParam(key, value, {replace = false} = {}) {
     const next = new URLSearchParams(searchParams)
     if (value) {
-      next.set('available', '1')
+      next.set(key, value)
     } else {
-      next.delete('available')
+      next.delete(key)
     }
+    setSearchParams(next, {replace})
+  }
+
+  function setSection(nextSection) {
+    const next = new URLSearchParams(searchParams)
+    next.set('section', nextSection)
+    next.delete('q')
+    next.delete('allergens')
     setSearchParams(next)
   }
 
-  // Перемикач виключення конкретного алергену
-  function toggleAllergen(allergenValue) {
-    setExcludedAllergens((previous) =>
-      previous.includes(allergenValue)
-        ? previous.filter((item) => item !== allergenValue)
-        : [...previous, allergenValue]
-    )
+  function setQuery(value) {
+    updateParam('q', value, {replace: true})
   }
 
-  // Скидання всіх фільтрів (і з URL, і з стану алергенів)
+  function setSortBy(value) {
+    updateParam('sort', value === 'name-asc' ? '' : value)
+  }
+
+  function setAvailableOnly(value) {
+    updateParam('available', value ? '1' : '')
+  }
+
+  function toggleAllergen(allergenValue) {
+    const nextAllergens = excludedAllergens.includes(allergenValue)
+      ? excludedAllergens.filter((item) => item !== allergenValue)
+      : [...excludedAllergens, allergenValue]
+    updateParam('allergens', nextAllergens.join(','))
+  }
+
   function resetFilters() {
     const next = new URLSearchParams(searchParams)
     next.delete('q')
     next.delete('available')
+    next.delete('allergens')
+    next.delete('sort')
     setSearchParams(next)
-    setExcludedAllergens([])
   }
 
   return {
+    section,
+    setSection,
     query,
     setQuery,
+    sortBy,
+    setSortBy,
     availableOnly,
     setAvailableOnly,
     excludedAllergens,

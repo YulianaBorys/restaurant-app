@@ -1,3 +1,3 @@
-export default function MenuSummary({ total=0 }) {
-    return <p className="menu-sumary" >Загальна вартість замовлення: {total} грн</p>;
+export default function MenuSummary({ count=0 }) {
+    return <p className="menu-summary">Позицій у результатах: {count}</p>;
 }

@@ -13,22 +13,6 @@ export default function OrdersPage({dishes=[]}){
 
     const flashMessage = location.state?.flashMessage
 
-    function updateParam(key, value) {
-        const newParams=new URLSearchParams(searchParams)
-        if(value && value!=='all'){
-            newParams.set(key,value)
-        }else{
-            newParams.delete(key)
-        }
-        setSearchParams(newParams, {replace: true})
-    }
-
-    function handleDelete(orderId) {
-        const confirmed=window.confirm(`Ви впевнені, що хочете видалити замовлення ${orderId}?`)
-        if(confirmed){
-            deleteOrder(orderId)
-        }
-    }
 
     if(orders.length===0){
         return(

@@ -22,7 +22,7 @@ export default function OrderEditPage(){
 
     function handleSubmitSuccess(formData){
         updateOrder(order.id, formData)
-        navigate('/orders', {replace: true})
+        navigate('/order', {replace: true})
     }
 
     const initialValues={
@@ -41,7 +41,7 @@ export default function OrderEditPage(){
                 key={`edit-${order.id}`}
                 initialValues={initialValues}
                 onSubmitSuccess={handleSubmitSuccess}
-                onCancel={()=>navigate('/orders')}
+                onCancel={()=>navigate('/order')}
                 submitLabel="Зберегти зміни"
             />
         </div>

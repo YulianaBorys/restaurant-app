@@ -15,7 +15,11 @@ export default function DishCard({ dish, selected, onSelect }) {
             <p className="category">Категорія: {dish.category}</p>
             <img src={dish.image} alt={dish.name} className="image" />
             <p className="price">Ціна: {dish.price} грн</p>
-            <p><AvailabilityBadge available={dish.available} /></p>
+            {dish.deliveryAvailable === false ? (
+                <p className="delivery-note">Лише у закладі, без доставки</p>
+            ) : (
+                <p><AvailabilityBadge available={dish.available} /></p>
+            )}
 
                 <AppButton 
                 variant="secondary"
@@ -30,7 +34,7 @@ export default function DishCard({ dish, selected, onSelect }) {
                 </p>
                 <p hidden={!detailsOpen}>Алергени: {(dish.allergens ?? []).join(", ") || "Немає"}</p>
 
-                {onSelect && (
+                {onSelect && dish.deliveryAvailable !== false && (
                     <AppButton 
                     onClick={() => onSelect(dish.id)} >
                     
