@@ -256,6 +256,11 @@ form input{
   border-radius: 4px;
 }
 
+.form-field-error {
+  margin: -8px 0 12px;
+  color: #b42318;
+}
+
 .App {
   max-width: 900px;
   text-align: center;

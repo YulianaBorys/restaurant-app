@@ -41,7 +41,7 @@ export default function OrderEditPage(){
                 key={`edit-${order.id}`}
                 initialValues={initialValues}
                 onSubmitSuccess={handleSubmitSuccess}
-                onCancel={()=>navigate('/order')}
+                onCancel={()=>navigate(`/orders/${order.id}`)}
                 submitLabel="Зберегти зміни"
             />
         </div>

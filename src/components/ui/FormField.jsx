@@ -1,4 +1,4 @@
-export default function FormField({ id, label, hint, children }) {
+export default function FormField({ id, label, hint, error, children }) {
     const hintId=hint ? `${id}-hint` : undefined;
 
     return (
@@ -6,6 +6,7 @@ export default function FormField({ id, label, hint, children }) {
             {label && <label htmlFor={id}>{label}</label>}
             {children}
             {hint && <p id={hintId} className="form-field-hint">{hint}</p>}
+            {error && <p className="form-field-error" role="alert">{error}</p>}
         </div>
     );
 }

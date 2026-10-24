@@ -22,7 +22,6 @@ export default function OrderForm({
   );
 
 
-  const [errors, setErrors] = useState({});
 
   function handleChange(e) {
     const { name, value, type, checked } = e.target;
@@ -93,6 +92,20 @@ export default function OrderForm({
         />
       </FormField>
 
+      <FormField
+        id="order-quantity"
+        label="Кількість порцій"
+        error={errors.quantity}
+      >
+        <input
+          type="number"
+          id="order-quantity"
+          name="quantity"
+          value={formData.quantity}
+          onChange={handleChange}
+        />
+
+      </FormField>
       <FormField
         id="order-comment"
         label="Коментар до замовлення (необов'язково)"
