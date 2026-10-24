@@ -22,6 +22,7 @@ export default function OrderForm({
   );
 
 
+  const [errors, setErrors] = useState({});
 
   function handleChange(e) {
     const { name, value, type, checked } = e.target;
