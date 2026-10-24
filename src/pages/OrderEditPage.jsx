@@ -1,10 +1,13 @@
-import { useNavigate, useParams } from "react-router-dom";
-import OrderPage from "./OrderPage";
-import NotFoundPage from "./NotFoundPage";
+import {useNavigate, useParams} from 'react-router-dom'
+import OrderForm from '../components/orders/OrderForm'
+import PageHeading from '../components/ui/PageHeading'
+import NotFoundPage from './NotFoundPage'
+import {useOrders} from '../context/orderContext.js'
 
-export default function OrderEditPage({orders, dishes}){
+export default function OrderEditPage(){
     const {orderId}=useParams()
     const navigate =useNavigate()
+    const {orders, updateOrder}=useOrders()
 
     const order=orders.find((entry)=>entry.id===orderId)
 
@@ -12,35 +15,35 @@ export default function OrderEditPage({orders, dishes}){
         return(
             <NotFoundPage
             title="404: Замовлення не знайдено"
-            message="Замовлення з таким індекатором відсутнє в системі"
+            message="Замовлення з таким ідентифікатором відсутнє в системі"
             />
         )
     }
 
-    const dish=dishes.find((entry)=>entry.id===order.dishId)
-
-    if (!dish){
-        return(
-            <NotFoundPage
-            title="404: Страва відсутня в меню"
-            message="Страва з цього замовлення більше не відображається в меню"
-            />
-        )
+    function handleSubmitSuccess(formData){
+        updateOrder(order.id, formData)
+        navigate(`/orders/${order.id}`, {replace: true})
     }
 
-    const initialDraft={
-        purpose: order.purpose?? '',
-        needsHelp: order.needsHelp?? false,
+    const initialValues={
+        clientName: order.clientName ?? '',
+        clientPhone: order.clientPhone ?? '',
+        clientAddress: order.clientAddress ?? '',
+        quantity: order.quantity ?? 1,
+        comment: order.comment ?? order.purpose ?? '',
+        needsCutlery: order.needsCutlery ?? order.needsHelp ?? false,
     }
 
     return(
-        <OrderPage
-        key={`edit-${order.id}`}
-        title={`Редагування замовлення ${order.id}`}
-        dish={dish}
-        initialDraft={initialDraft}
-        onCancel={()=>navigate('/order')}
-        cancelLabel="Вийти без збереження"
-        />
+        <div className="order-edit-page">
+            <PageHeading title={`Редагування замовлення ${order.id}`} />
+            <OrderForm
+                key={`edit-${order.id}`}
+                initialValues={initialValues}
+                onSubmitSuccess={handleSubmitSuccess}
+                onCancel={()=>navigate('/order')}
+                submitLabel="Зберегти зміни"
+            />
+        </div>
     )
 }

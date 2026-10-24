@@ -14,7 +14,6 @@ import ReviewList from './components/ReviewList'
 import NotFoundPage from './pages/NotFoundPage'
 
 import {MENU_ITEMS, REVIEWS} from './data/restaurantData'
-import {orders} from './data/orders'
 
 import './App.css'
 
@@ -28,9 +27,9 @@ export default function App() {
             <Route path="/menu/:dishId" element={<DishDetailsPage dishes={MENU_ITEMS}/>}/>
 
             <Route path="/order" element={<OrdersLayout/>}>
-              <Route index element={<OrdersPage orders={orders} dishes={MENU_ITEMS}/>}/>
+              <Route index element={<OrdersPage dishes={MENU_ITEMS}/>}/>
               <Route path="new" element={<OrderCreatePage dishes={MENU_ITEMS}/>}/>
-              <Route path=":orderId/edit" element={<OrderEditPage orders={orders} dishes={MENU_ITEMS}/>}/>
+              <Route path=":orderId/edit" element={<OrderEditPage/>}/>
             </Route>
 
             <Route path="/booking" element={<BookingForm />}/>

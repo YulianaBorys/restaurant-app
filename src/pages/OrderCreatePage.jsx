@@ -1,43 +1,21 @@
-import {Link, useNavigate, useSearchParams} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 import PageHeading from '../components/ui/PageHeading'
 import useDishSelection from '../hooks/useDishSelection'
-import OrderPage from './OrderPage'
-import NotFoundPage from './NotFoundPage'
-import EmptyState from '../components/ui/EmptyState'
+import OrderForm from '../components/orders/OrderForm'
+import {useOrders} from '../context/orderContext.js'
 
-export default function OrderCreatePage({dishes}){
-    const [searchParams]=useSearchParams()
+export default function OrderCreatePage(){
+    
     const navigate=useNavigate()
-    const {selectedId, selectedDish, clearSelection}=useDishSelection()
+    const {clearSelection}=useDishSelection()
+    const {addOrder}= useOrders()
 
-    const dishId=searchParams.get('dishId')
-    const EFdishId=dishId || selectedId
-
-    if(!EFdishId){
-        return(
-            <div className="order-create-empty">
-                <PageHeading title="Створення замовлення"/>
-                <EmptyState title="Страва ще не обрана">
-                    <h5>Спочатку оберіть страви з меню</h5>
-                    <div>
-                        <Link to="/menu" className="app-button app-button-primary">
-                        Відкрити меню
-                        </Link> 
-                    </div>
-                </EmptyState>
-            </div>
-        )
-    }
-
-    const dish=dishes.find((entry)=>entry.id===EFdishId) || selectedDish
-
-    if(!dish){
-        return(
-            <NotFoundPage
-            title="404: Страва не знайдена"
-            message="Зазначену страву не знайдено у меню"
-            />
-        )
+    function handleSubmitSuccess(formData){
+        const newOrderId = addOrder(formData)
+        navigate('/order', {
+            replace: true,
+            state: {flashMessage: `Замовлення ${newOrderId} успішно створено!`},
+        })
     }
 
     function handleCancel(){
@@ -46,10 +24,20 @@ export default function OrderCreatePage({dishes}){
     }
 
     return(
-        <OrderPage
-        key={`new-${dish.id}`}
-        dish={dish}
+        <div className="order-create-page">
+        <PageHeading title="Створення нового замовлення" />
+        <OrderForm
+        submitLabel="Створити замовлення"
+        initialValues={{
+            clientName: '', 
+            clientPhone: '', 
+            clientAddress: '', 
+            comment: '', 
+            quantity: 1, 
+            needsCutlery: false,}}
+        onSubmitSuccess={handleSubmitSuccess}
         onCancel={handleCancel}
         />
+        </div>
     )
 }
