@@ -11,13 +11,13 @@
  * @property {string} createdAt
  */
 
-export const orderServiceContract={
+export const orderServiceContract = {
     /**
      * Отримати всі замовлення
-     * @returns {Promise<Order[]}
+     * @returns {Promise<Order[]>}
      */
-    async getAll(){
-        throw new Error('getAll() не реалізовано')
+    async getAll() {
+        throw new Error('getAll() не реалізовано');
     },
 
     /**
@@ -25,35 +25,40 @@ export const orderServiceContract={
      * @param {string} id
      * @returns {Promise<Order>}
      */
-    async getById(data){
-        throw newError('getId() не реалізовано')
+    async getById(id) {
+        void id;
+        throw new Error('getId() не реалізовано');
     },
 
     /**
      * Створити нове замовлення
-     * @param {Omit<Order, 'id' | 'createdAt'} data
+     * @param {Omit<Order, 'id' | 'createdAt'>} data
      * @returns {Promise<Order>}
      */
-    async create(data){
-        throw newError('create() не реалізовано')
+    async create(data) {
+        void data;
+        throw new Error('create() не реалізовано');
     },
 
     /**
-     * Оновити існуюче замовлення 
+     * Оновити існуюче замовлення
      * @param {string} id
      * @param {Partial<Order>} data
      * @returns {Promise<Order>}
      */
-    async update(id, data){
-        throw newError('update() не реалізовано')
+    async update(id, data) {
+        void id;
+        void data;
+        throw new Error('update() не реалізовано');
     },
 
     /**
      * Видалити замовлення за ID
      * @param {string} id
-     * @returns {Promise<{success: boolean, id:string}>}
+     * @returns {Promise<{success: boolean, id: string}>}
      */
-    async delete(id){
-        throw newError('delete() не реалізовано')
-    }
-}
+    async delete(id) {
+        void id;
+        throw new Error('delete() не реалізовано');
+    },
+};

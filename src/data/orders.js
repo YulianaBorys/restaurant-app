@@ -1,4 +1,4 @@
-export const orders=[
+export const orders = [
     {
         id: 'ord-001',
         dishId: 1,
@@ -8,7 +8,10 @@ export const orders=[
     {
         id: 'ord-002',
         dishId: 3,
-        purpose:'заїзд у двір',
+        purpose: 'заїзд у двір',
         needsHelp: false,
     },
-]
+];
+
+export const initialOrders = [...orders];
+export const initialOrder = orders[0];

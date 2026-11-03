@@ -10,7 +10,7 @@ export const apiOrderService={
     },
 
     async getById(id){
-        const response=await fetch(`${API_URL}/${id}`)
+        const response=await fetch(`${API_URL}/${id}`);
         if(!response.ok){
             throw new Error(`Замовлення з id ${id} не знайдено на сервері`)
         }
@@ -53,7 +53,7 @@ export const apiOrderService={
     async delete(id){
         const response=await fetch(`${API_URL}/${id}`,{
             method: 'DELETE',
-        }),
+        })
 
         if(!response.ok){
             throw new Error(`Помилка при видаленні замовлення  з id ${id} на сервері`)
