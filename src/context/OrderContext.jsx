@@ -1,32 +1,67 @@
-import {orders as initialOrders} from '../data/orders.js';
-import {useState} from 'react';
-import OrderContext from './orderContext.js';
+import {useState, createContext, useContext, useEffect} from 'react';
+import {mockOrderService as mockOrderService} from '../services/mockOrderService.js'
+
+export const OrderContext=createContext(null)
 
 export function OrderProvider({children}){
-    const [orders, setOrders]=useState(initialOrders);
+    const [orders, setOrders]=useState([]);
+    const [isLoading, setIsLoading]=useState(true);
 
-    function addOrder(newOrderData){
-        const newOrder={
-            ...newOrderData, 
-            id: `ord-${Date.now()}`, 
-            createdAt: new Date().toISOString(),
-        };
-        setOrders(prev=>[newOrder, ...prev]);
-        return newOrder.id;
+    const fetchOrders=async()=>{
+        setIsLoading(true);
+        try{
+            const data=await mockOrderService.getAll();
+            setOrders(data)
+        } catch(err){
+            console.error('Помилка завантаження: ',err)
+        } finally{
+            setIsLoading(false)
+        }
     }
 
-    function updateOrder(id, updateData){
-       setOrders(prevOrders=> prevOrders.map(ord=>ord.id===id? {
-        ...ord, ...updateData}:ord));
+    useEffect(()=>{
+        fetchOrders()
+    }, [])
+
+    const addOrder=async(newOrderData)=>{
+        const created =await orderService.create(newOrderData)
+        setOrders((prev)=> [created, ...prev])
+        return created.id
     }
 
-    function deleteOrder(id){
-        setOrders(prevOrders=>prevOrders.filter(ord=>ord.id!==id));
+    const updateOrder=async (id, updateData)=>{
+        const updated =await orderService.update(id, updateData)
+        setOrders((prevOrders)=>
+        prevOrders.map((ord)=>(ord.id===id?update:ord))
+    )
+    return updated
+    }
+
+    const deleteOrder=async (id)=>{
+        await orderService.delete(id)
+        setOrders((prevOrders)=>prevOrders.filter((ord)=>ord.id!==id))
     }
 
     return(
-        <OrderContext.Provider value={{orders, addOrder, updateOrder, deleteOrder}}>
+        <OrderContext.Provider 
+        value={
+            {orders, 
+            isLoading,
+            fetchOrders,
+            addOrder, 
+            updateOrder, 
+            deleteOrder
+            }}
+        >
             {children}
         </OrderContext.Provider>
     )
+}
+
+export function useOrders(){
+    const next=useContext(OrderContext)
+    if(!context){
+        throw new Error('useOrders must be used within an OrderProvider')
+    }
+    return context;
 }
