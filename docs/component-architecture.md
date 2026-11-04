@@ -88,3 +88,26 @@ AppLayout (layout)
 | `/orders/:orderId` | `OrderDetailsPage` | `:orderId` (`useParams`) | Перегляд замовлення та видалення з модальним вікном. |
 | `/orders/:orderId/edit` | `OrderEditPage` | `:orderId` (`useParams`) | Форма оновлення даних замовлення. |
 | `*` | `NotFoundPage` | — | Опрацювання невідомих маршрутів (404). |
+
+
+```markdown
+## Рівень асинхронних даних (Лабораторна робота 3.2)
+
+### 1. Сервісні модулі (`src/services/`)
+- **Експорт:** `orderService` (динамічно вибирається в `src/services/index.js`).
+- **Методи:**
+  - `getAll()` -> `Promise<Order[]>`
+  - `getById(id)` -> `Promise<Order>`
+  - `create(data)` -> `Promise<Order>`
+  - `update(id, data)` -> `Promise<Order>`
+  - `delete(id)` -> `Promise<{ success: boolean, id: string }>`
+
+### 2. Стани UI
+1. **Loading:** відображення `<Loader />` під час асинхронного очікування.
+2. **Success:** рендеринг реальних даних.
+3. **Error:** відображення `<ErrorMessage />` із кнопкою повторного запиту `onRetry`.
+4. **Empty:** `<EmptyState />` при відсутності записів у системі.
+5. **No Matches:** `<EmptyState />` з кнопкою скидання, якщо фільтри не знайшли результатів.
+
+### 3. Захист від застарілих відповідей (Stale Responses)
+Застосовано прапорці скасування `let isCurrent = true` усередині `useEffect` для запобігання race conditions при повторному читанні.
