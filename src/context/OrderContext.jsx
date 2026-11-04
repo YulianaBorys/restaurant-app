@@ -1,49 +1,64 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { OrderContext } from './orderContext.js';
-import { mockOrderService } from '../services/mockOrderService.js';
 import { orderService } from '../services/index.js';
 
 export function OrderProvider({ children }) {
     const [orders, setOrders] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [error, setError]=useState(null)
 
-    const fetchOrders = async () => {
+    const fetchOrders = useCallback( async () => {
         setIsLoading(true);
+        setError(null)
+
+        let isCurrent=true;
+
         try {
-            const data = await mockOrderService.getAll();
-            setOrders(data);
+            const data = await orderService.getAll();
+            if(isCurrent){
+                setOrders(data);
+            }
         } catch (err) {
-            console.error('Помилка завантаження: ', err);
+            if(isCurrent){
+                setError(err.message || 'Помилка завантаження');
+            }
         } finally {
-            setIsLoading(false);
+            if(isCurrent){
+                setIsLoading(false);
+            }
         }
-    };
+
+        return()=>{
+            isCurrent=false;
+        }
+    },[]);
 
     useEffect(() => {
-        const timeoutId = setTimeout(() => {
-            void fetchOrders();
-        }, 0);
+        let cleanup
+        fetchOrders().then((cleanupFn)=>{
+            cleanup=cleanupFn
+        })
 
-        return () => clearTimeout(timeoutId);
-    }, []);
+        return () => {
+            if(typeof cleanup==='function') cleanup()
+        }
+    }, [fetchOrders]);
 
     const addOrder = async (newOrderData) => {
         const created = await orderService.create(newOrderData);
-        setOrders((prev) => [created, ...prev]);
-        return created.id;
+        await fetchOrders()
+        return created;
     };
 
     const updateOrder = async (id, updateData) => {
         const updated = await orderService.update(id, updateData);
-        setOrders((prevOrders) =>
-            prevOrders.map((ord) => (ord.id === id ? updated : ord))
-        );
+        await fetchOrders()
         return updated;
     };
 
     const deleteOrder = async (id) => {
         await orderService.delete(id);
-        setOrders((prevOrders) => prevOrders.filter((ord) => ord.id !== id));
+        await fetchOrders()
     };
 
     return (
@@ -51,6 +66,7 @@ export function OrderProvider({ children }) {
             value={{
                 orders,
                 isLoading,
+                error,
                 fetchOrders,
                 addOrder,
                 updateOrder,
