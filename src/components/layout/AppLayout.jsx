@@ -1,6 +1,6 @@
 import SiteHeader from "./SiteHeader.jsx";
 import {Outlet} from 'react-router-dom'
-import {DishSelectionProvider} from '../../context/DishSelectionContext'
+import { DishSelectionProvider } from "../../context/DishSelectionContext.jsx";
 
 const navigationLinks=[
     {to: '/', label: 'Головна', end: true},

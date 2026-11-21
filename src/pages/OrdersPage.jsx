@@ -5,6 +5,7 @@ import AppButton from '../components/ui/AppButton.jsx';
 import Loader from '../components/ui/Loader.jsx';
 import ErrorMessage from '../components/ui/ErrorMessage.jsx';
 import EmptyState from '../components/ui/EmptyState.jsx';
+import { useMemo } from 'react';
 
 export default function OrdersPage({ dishes = [] }) {
   const { orders, isLoading, error, fetchOrders, deleteOrder } = useOrders();
@@ -13,18 +14,20 @@ export default function OrdersPage({ dishes = [] }) {
   const query = searchParams.get('q') || '';
 
   // Відфільтрований список
-  const filteredOrders = orders.filter((order) => {
+const filteredOrders = useMemo(() => {
     const searchQuery = query.toLowerCase().trim();
-    const dish = dishes.find((d) => d.id === order.dishId);
-    const dishName = dish ? dish.name.toLowerCase() : '';
-    
-    return (
-      !searchQuery ||
-      order.id?.toLowerCase().includes(searchQuery) ||
-      dishName.includes(searchQuery) ||
-      order.comment?.toLowerCase().includes(searchQuery)
-    );
-  });
+    return orders.filter((order) => {
+      const dish = dishes.find((d) => d.id === order.dishId);
+      const dishName = dish ? dish.name.toLowerCase() : '';
+
+      return (
+        !searchQuery ||
+        order.id?.toLowerCase().includes(searchQuery) ||
+        dishName.includes(searchQuery) ||
+        order.comment?.toLowerCase().includes(searchQuery)
+      );
+    });
+  }, [orders, dishes, query]);
 
   // 1. Стан ЗАВАНТАЖЕННЯ (Loading)
   if (isLoading) {

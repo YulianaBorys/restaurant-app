@@ -1,7 +1,7 @@
 import {useNavigate, useParams} from 'react-router-dom'
 import OrderForm from '../components/orders/OrderForm'
 import PageHeading from '../components/ui/PageHeading'
-import LoadingSpinner from '../components/ui/LoadingSpinner'
+import Loader from '../components/ui/Loader'
 import NotFoundPage from './NotFoundPage'
 import {useOrders} from '../context/orderContext.js'
 
@@ -11,7 +11,7 @@ export default function OrderEditPage(){
     const {orders, isLoading, updateOrder}=useOrders()
 
     if(isLoading){
-        return <LoadingSpinner message="Завантаження даних замовлення..." />
+        return <Loader message="Завантаження даних замовлення..." />
     }
 
     const order=orders.find((entry)=>entry.id===orderId)
