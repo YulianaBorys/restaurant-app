@@ -10,11 +10,12 @@ export default function OrderCreatePage(){
     const {clearSelection}=useDishSelection()
     const {addOrder}= useOrders()
 
-    function handleSubmitSuccess(formData){
-        const newOrderId = addOrder(formData)
+    async function handleSubmitSuccess(formData){
+        const createdOrder=await addOrder(formData)
+        clearSelection()
         navigate('/order', {
             replace: true,
-            state: {flashMessage: `Замовлення ${newOrderId} успішно створено!`},
+            state: {flashMessage: `Замовлення ${createdOrder.id} успішно створено!`},
         })
     }
 

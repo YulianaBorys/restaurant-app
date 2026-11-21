@@ -98,7 +98,7 @@ export default function OrdersPage({ dishes = [] }) {
 
               <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
                 <Link
-                  to={`/orders/${order.id}/edit`}
+                  to={`/order/${order.id}/edit`}
                   className="app-button app-button-secondary"
                 >
                   Редагувати замовлення
