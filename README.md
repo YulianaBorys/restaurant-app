@@ -143,3 +143,31 @@ VITE_USE_MOCK=true
 
 # Базова адреса зовнішнього REST API
 VITE_API_URL=[https://650000000000000000000000.mockapi.io/api/v1/orders](https://650000000000000000000000.mockapi.io/api/v1/orders)
+
+
+---
+
+
+## Тестування та перевірка якості (Лабораторна робота 4.1)
+
+Для автоматизованої перевірки застосунку використано **Vitest** та **React Testing Library**:
+- `src/__tests__/validation.test.js` — unit-тести правил валідації форми замовлення (`validateOrderForm`).
+- `src/__tests__/OrderForm.test.jsx` — компонентні тести взаємодії з формою та збереження введених даних при помилках.
+- `src/__tests__/OrdersAsync.test.jsx` — інтеграційні тести станів `Loading`, `Success`, `Empty` та `Error` через підміну методів `orderService` (`vi.spyOn`).
+
+### Команди запуску та перевірки
+- `npm run dev` — запуск режиму розробки.
+- `npm test` — запуск автоматизованих тестів (`vitest run`).
+- `npm run build` — створення оптимізованої виробничої збірки у папці `dist/`.
+- `npm run preview` — локальна перевірка зібраної production-версії.## Тестування та перевірка якості (Лабораторна робота 4.1)
+
+Для автоматизованої перевірки застосунку використано **Vitest** та **React Testing Library**:
+- `src/__tests__/validation.test.js` — unit-тести правил валідації форми замовлення (`validateOrderForm`).
+- `src/__tests__/OrderForm.test.jsx` — компонентні тести взаємодії з формою та збереження введених даних при помилках.
+- `src/__tests__/OrdersAsync.test.jsx` — інтеграційні тести станів `Loading`, `Success`, `Empty` та `Error` через підміну методів `orderService` (`vi.spyOn`).
+
+### Команди запуску та перевірки
+- `npm run dev` — запуск режиму розробки.
+- `npm test` — запуск автоматизованих тестів (`vitest run`).
+- `npm run build` — створення оптимізованої виробничої збірки у папці `dist/`.
+- `npm run preview` — локальна перевірка зібраної production-версії.
